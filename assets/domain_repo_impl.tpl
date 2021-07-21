@@ -1,8 +1,16 @@
 {% autoescape off %}
 package impl
 
+import (
+	"baibao/meishi/pkg/next/domain"
+	"baibao/meishi/pkg/next/repo/internal/model"
+	"context"
+    "github.com/ahmetb/go-linq/v3"
+    "github.com/pkg/errors"
+)
+
 type {{ content.Name }}RepoImpl struct {
-	Ds *database.Ds
+	Db *gorm.DB
 }
 
 func (p *{{ content.Name }}RepoImpl) Update(ctx context.Context, in *domain.{{ content.Name }}) error {
@@ -10,7 +18,7 @@ func (p *{{ content.Name }}RepoImpl) Update(ctx context.Context, in *domain.{{ c
 		return err
 	}
 
-	err := p.Ds.Gdb().Save(model.{{ content.Name }}{}.New(in)).Error
+	err := p.Db.Save(model.{{ content.Name }}{}.New(in)).Error
 
 	return errors.WithStack(err)
 }
@@ -20,7 +28,7 @@ func (p *{{ content.Name }}RepoImpl) Create(ctx context.Context, in *domain.{{ c
 		return err
 	}
 	obj := model.{{ content.Name }}{}.New(in)
-	if err := p.Ds.Gdb().Create(obj).Error; err != nil {
+	if err := p.Db.Create(obj).Error; err != nil {
 		return errors.WithStack(err)
 	}
 	in.ID = obj.ID
@@ -29,7 +37,7 @@ func (p *{{ content.Name }}RepoImpl) Create(ctx context.Context, in *domain.{{ c
 
 func (p *{{ content.Name }}RepoImpl) MustGet(ctx context.Context, id int) (*domain.{{ content.Name }}, error) {
 	var o model.{{ content.Name }}
-	if err := p.Ds.Gdb().Take(&o, id).Error; err != nil {
+	if err := p.Db.Take(&o, id).Error; err != nil {
 		return nil, errors.WithStack(err)
 	}
 	return o.ToDomain(), nil
@@ -41,8 +49,8 @@ func (p *{{ content.Name }}RepoImpl) MultiGet(ctx context.Context, id ...int) (d
 		return domain.{{ content.Name }}List{}, nil
 	}
 
-	var l []*model.Order
-	if err := p.Ds.Gdb().
+	var l []*model.{{ content.Name }}
+	if err := p.Db.
 		Where("id in ?", id).
 		Find(&l).Error; err != nil {
 		return nil, errors.WithStack(err)
@@ -55,7 +63,7 @@ func (p *{{ content.Name }}RepoImpl) MultiGet(ctx context.Context, id ...int) (d
 
 func (p *{{ content.Name }}RepoImpl) List(ctx context.Context) (domain.{{ content.Name }}List, error) {
 	var l []*model.{{ content.Name }}
-	db := p.Ds.Gdb()
+	db := p.Db
 
 	if err := db.Find(&l).Error; err != nil {
 		return nil, errors.WithStack(err)
