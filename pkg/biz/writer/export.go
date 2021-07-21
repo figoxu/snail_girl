@@ -35,10 +35,7 @@ func init() {
 	Tpl.domainService = ut.File.ReadAsset("/assets/domain_service.tpl")
 	Tpl.domainServiceImpl = ut.File.ReadAsset("/assets/domain_service_impl.tpl")
 	Tpl.domainServiceTest = ut.File.ReadAsset("/assets/domain_service_impl_test.tpl")
-	Tpl.declare = ut.File.ReadAsset(`/assets/declare.tpl`)
-	Tpl.content = ut.File.ReadAsset(`/assets/content.tpl`)
 	Tpl.curl = ut.File.ReadAsset(`/assets/domain_data.tpl`)
-	Tpl.pushOrder = ut.File.ReadAsset(`/assets/push_order.tpl`)
 }
 
 type Writer interface {

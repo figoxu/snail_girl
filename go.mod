@@ -6,6 +6,8 @@ require (
 	github.com/ahmetb/go-linq/v3 v3.1.0
 	github.com/flosch/pongo2 v0.0.0-20190707114632-bbf5a6c351f4
 	github.com/jessevdk/go-assets v0.0.0-20160921144138-4f4301a06e15
+	github.com/jessevdk/go-assets-builder v0.0.0-20130903091706-b8483521738f // indirect
+	github.com/jessevdk/go-flags v1.5.0 // indirect
 	github.com/jinzhu/inflection v1.0.0
 	github.com/onsi/ginkgo v1.10.3
 	github.com/onsi/gomega v1.7.1
