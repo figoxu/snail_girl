@@ -22,8 +22,7 @@ var _ = Describe("{{ content.Name }}", func() {
         		Ω(err).NotTo(HaveOccurred())
 
 		f := func() {
-		    testData := testdata.{{ content.Name }}()
-		    testData.ID = 1
+		    testData := testdata.{{ content.Name }}(1)
 			req := model.{{ content.Name }}{}.New(testData)
 			err := ro.Db.Create(req).Error
 			Ω(err).ShouldNot(HaveOccurred())
@@ -33,7 +32,7 @@ var _ = Describe("{{ content.Name }}", func() {
 	})
 
 	It("Create", func() {
-        err := ro.Create(ctx, testdata.{{ content.Name }}())
+        err := ro.Create(ctx, testdata.{{ content.Name }}(2))
         Ω(err).ShouldNot(HaveOccurred())
     })
 

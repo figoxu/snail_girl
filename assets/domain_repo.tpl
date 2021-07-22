@@ -1,5 +1,9 @@
 {% autoescape off %}
 package repo
+import (
+	"baibao/meishi/pkg/next/domain"
+	"context"
+)
 //go:generate mockgen -destination=../mocks/mrepo/{{ fileName }} -package=mrepo . {{ content.Name }}Repo
 
 type {{ content.Name }}Repo interface {
