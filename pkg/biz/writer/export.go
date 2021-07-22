@@ -24,6 +24,7 @@ var Tpl struct {
 	domainService           string
 	domainServiceImpl       string
 	domainServiceTest       string
+	domainVaild             string
 }
 
 func init() {
@@ -36,6 +37,7 @@ func init() {
 	Tpl.domainServiceImpl = ut.File.ReadAsset("/assets/domain_service_impl.tpl")
 	Tpl.domainServiceTest = ut.File.ReadAsset("/assets/domain_service_impl_test.tpl")
 	Tpl.curl = ut.File.ReadAsset(`/assets/domain_data.tpl`)
+	Tpl.domainVaild = ut.File.ReadAsset(`/assets/domain_vaild.tpl`)
 }
 
 type Writer interface {

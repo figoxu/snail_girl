@@ -15,6 +15,7 @@ type ScaffoldDomain struct {
 	ServiceWriter  *ScaffoldDomainServiceWriter
 	RepoWriter     *ScaffoldDomainRepoWriter
 	TestDataWriter *ScaffoldDomainTestDataWriter
+	VaildWriter    *ScaffoldDomainVaildWriter
 }
 
 func (p *ScaffoldDomain) MatchInput(content string) []string {
@@ -23,7 +24,7 @@ func (p *ScaffoldDomain) MatchInput(content string) []string {
 }
 
 func (p *ScaffoldDomain) GenerateResult(fileSeed, clazzName string) string {
-	writers := []ScaffoldDomainWriter{p.ServiceWriter, p.RepoWriter, p.TestDataWriter}
+	writers := []ScaffoldDomainWriter{p.ServiceWriter, p.RepoWriter, p.TestDataWriter, p.VaildWriter}
 	content, err := ut.File.ReadAll(fileSeed)
 	ut.Chk(err)
 	vs := p.Parser.Parse(content)
@@ -310,5 +311,25 @@ func (p *ScaffoldDomainServiceWriter) WriteFile(seedFile string, domainStruct *D
 	}
 	seedFile = strings.ReplaceAll(seedFile, ".go", "_test.go")
 	err = genFile(Tpl.domainServiceTest, "/../service/impl/")
+	return err
+}
+
+type ScaffoldDomainVaildWriter struct {
+}
+
+func (p *ScaffoldDomainVaildWriter) WriteFile(seedFile string, domainStruct *DomainStruct) error {
+	genFile := func(tplContent, middlePath string) error {
+		content, err := genContent(seedFile, tplContent, domainStruct)
+		if err != nil {
+			return err
+		}
+		target := suggestPath(seedFile, middlePath)
+		if err := touch(target); err != nil {
+			return err
+		}
+		ut.File.FlushWrite(target.String(), content)
+		return nil
+	}
+	err := genFile(Tpl.domainVaild, "./")
 	return err
 }
