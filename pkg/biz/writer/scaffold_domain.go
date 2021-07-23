@@ -231,7 +231,6 @@ func (p *ScaffoldDomainRepoWriter) WriteFile(seedFile string, domainStruct *Doma
 		seq := ut.NewDataSeq()
 		linq.From(domainStruct.Fields).ForEachT(func(x *DomainField) {
 			if strings.ToLower(x.Name) == "id" {
-				x.GormTag = `gorm:"primary_key"`
 				return
 			}
 			tp := x.Type.GetSeqTp()
